@@ -55,14 +55,14 @@ const loginUser = asyncHandler(async (req, res) => {
   const user = await User.findOne({ email }).select('+password');
   if (!user) {
     res.status(401);
-    throw new Error('Invalid email or password');
+    throw new Error('No user found with this email, please register');
   }
 
   // Check if password matches
   const isMatch = await user.matchPassword(password);
   if (!isMatch) {
     res.status(401);
-    throw new Error('Invalid email or password');
+    throw new Error('Wrong password');
   }
 
   const token = user.generateAuthToken();
@@ -100,4 +100,4 @@ module.exports = {
   registerUser,
   loginUser,
   getMe
-}; 
+};
